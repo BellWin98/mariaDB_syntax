@@ -24,23 +24,17 @@ SHOW FULL COLUMNS FROM author;
 -- 테이블 생성문 조회
 -- 데이터베이스의 핵심 기술은 엔진 (대부분 InnoDB를 많이 씀)
 SHOW CREATE TABLE posts;
--- CREATE TABLE `posts` (
---    `id` int(11) NOT NULL,
---    `title` varchar(255) DEFAULT NULL,
---    `content` varchar(255) DEFAULT NULL,
---    `author_id` int(11) DEFAULT NULL,
---    PRIMARY KEY (`id`),
---    KEY `author_id` (`author_id`),
---    CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`)
---  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 -- 테이블 참조관계 및 제약조건 정보 조회
+-- 제약조건을 설정하는 순간 시스템 전체 어딘가에 데이터가 저장됨
 SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 WHERE TABLE_NAME = "posts";
 
 -- 테이블 인덱스 조회
+-- 주요 제약조건(PK, FK)을 걸게되면 인덱스 자동 생성
+-- 사용 이유: 규모가 큰 회사에서 트래픽이 많아져서 느려진 속도를 빠르게 하기 위해  
 -- 제약조건 정보조회와 인덱스 조회는 상당 수 일치 (pk, fk 제약조건은 인덱스를 생성)
--- 인덱스란 조회의 성능을 높이기 위한 별도 페이지라고 이해하면 될 것
+-- 인덱스란 조회의 성능을 높이기 위한 별도 목차 페이지라고 이해하면 될 것 (Only 조회 속도만 개선)
 -- BTREE 자료구조 이용
 SHOW INDEX FROM posts;
 
@@ -50,10 +44,12 @@ ALTER TABLE 테이블명 RENAME 새로운테이블명;
 ALTER TABLE posts RENAME post;
 
 -- 컬럼 추가(ADD)
-ALTER TALBE 테이블명 ADD COLUMN 컬럼명 자료형 [NULL 또는 NOT NULL];
+ALTER TABLE 테이블명 ADD COLUMN 컬럼명 자료형 [NULL 또는 NOT NULL];
 ALTER TABLE author ADD COLUMN role VARCHAR(5O);
 
--- 필드 타입 변경 (MODIFY): 덮어쓰기
+-- 필드 타입 변경 (MODIFY): 덮어쓰기 (제약조건이 있으면, )
+-- 타입을 변경하는 건 매우 어려움(거의 불가). 이미 데이터가 들어가 있으니까
+-- VARCHAR -> INT로 변경하기 어렵듯이
 ALTER TABLE 테이블명 MODIFY COLUMN 컬럼명 타입 [제약조건];
 ALTER TABLE author MODIFY COLUMN name VARCHAR(100) NOT NULL;
 

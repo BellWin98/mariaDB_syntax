@@ -30,3 +30,24 @@ DELETE FROM author WHERE id = 2;
 DELETE FROM post WHERE id = 2;
 -- 방법 2
 UPDATE post SET author_id = null WHERE author_id = 2;
+
+
+-- 게시판 회원은 총 5명이 되도록 만들고, 게시판에 실명으로 글이 쓰여진 게시글은 총 3건, 익명으로 글이 쓰여진 글은 총 2건이 되도록 데이터 INSERT
+INSERT INTO author(id, name, email) VALUES(1, 'a', 'a@naver.com');
+INSERT INTO author(id, name, email) VALUES(2, 'b', 'b@naver.com');
+INSERT INTO author(id, name, email) VALUES(3, 'c', 'c@naver.com');
+INSERT INTO author(id, name, email) VALUES(4, 'd', 'd@naver.com');
+INSERT INTO author(id, name, email) VALUES(5, 'e', 'e@naver.com');
+
+INSERT INTO post(id, title, contents, author_id) VALUES(1, 'title1', 'contents1', 1);
+INSERT INTO post(id, title, contents, author_id) VALUES(2, 'title1', 'contents2', 2);
+INSERT INTO post(id, title, contents, author_id) VALUES(3, 'title3', 'contents3', 3);
+INSERT INTO post(id, title, contents) VALUES(4, 'title4', 'contents4');
+INSERT INTO post(id, title, contents) VALUES(5, 'title5', 'contents5');
+
+-- 게시판의 회원을 모두 DELETE 하되, 기존에 POSTING된 글은 삭제되지 않고 남아있도록 하여라
+UPDATE post SET author_id = NULL WHERE author_id IS NOT NULL;
+DELETE FROM author;
+
+-- POST의 글을 3개만 조회하되, title을 기준으로 오름차순하고, 만약 제목이 같은 경우 contents로 내림차순이 되도록 조회
+SELECT * FROM post ORDER BY title, contents DESC LIMIT 3;
