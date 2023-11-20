@@ -1,0 +1,24 @@
+-- 문제: 프로그래머스 - 조건에 맞는 도서 리스트 출력하기
+-- 방법 1: DATE_FORMAT 사용
+SELECT BOOK_ID, DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE 
+FROM BOOK 
+WHERE DATE_FORMAT(PUBLISHED_DATE, '%Y') = '2021' AND CATEGORY = '인문' 
+ORDER BY PUBLISHED_DATE;
+
+-- 방법 2: LIKE 사용
+SELECT BOOK_ID, DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE 
+FROM BOOK 
+WHERE PUBLISHED_DATE LIKE '2021%' AND CATEGORY = '인문' 
+ORDER BY PUBLISHED_DATE;
+
+-- 방법 3: BETWEEN 사용
+SELECT BOOK_ID, DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE 
+FROM BOOK 
+WHERE (PUBLISHED_DATE BETWEEN '2021-01-01' AND '2021-12-31') AND CATEGORY = '인문' 
+ORDER BY PUBLISHED_DATE;
+
+
+-- 실습: date_format, like, between, 비교연산자를 각각 사용하여 2023년에 생성된 데이터 출력
+
+-- 실습: now()를 활용해서 오늘 날짜에 생성된 데이터 출력하기
+SELECT * FROM post WHERE DATE_FORMAT(created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d');
